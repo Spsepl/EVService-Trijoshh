@@ -64,7 +64,7 @@ Assuming a single-file usage:
 ```
 [Insert screenshot of the app UI here]
 ```
-
+![image alt](https://github.com/Spsepl/EVService-Trijoshh/blob/4fb93710b1e01cb0e4535c56e8721b11dc24eec3/Trijoshh%20Logo.png)
 ## License
 
 This project is for demonstration purposes and has no specific license. Feel free to use and modify as you wish.
