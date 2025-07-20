@@ -206,7 +206,9 @@
                     row.append($("<td>").text(serviceRequest.vehicleDeliveryDate));
                     row.append($("<td>").text(serviceRequest.amountReceived));
                     row.append($("<td>").text(serviceRequest.status));
-                    row.append($("<td>").text(serviceRequest.serviceReportFileName));
+                    row.append($("<td>").html(serviceRequest.serviceReportFileName !== "No file uploaded"
+                     ? `<span class="badge badge-info">${serviceRequest.serviceReportFileName}</span>`
+                     : `<span class="text-muted">No file</span>`));
                     row.append($("<td>").html("<button class='btn btn-sm btn-primary' onclick='editServiceRequest(" + index + ")'>Edit</button> <button class='btn btn-sm btn-danger' onclick='deleteServiceRequest(" + index + ")'>Delete</button>"));
                     tableBody.append(row);
                 });
