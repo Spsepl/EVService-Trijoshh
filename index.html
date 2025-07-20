@@ -214,57 +214,49 @@
                 });
             }
 
-            function updateDashboard() {
-                let totalServiceRequests = serviceRequests.length;
-                let pendingServiceRequests = serviceRequests.filter(function(serviceRequest) {
-                    return serviceRequest.status === "Pending";
-                }).length;
-                let inProgressServiceRequests = serviceRequests.filter(function(serviceRequest) {
-                    return serviceRequest.status === "In Progress";
-                }).length;
-                let deliveredServiceRequests = serviceRequests.filter(function(serviceRequest) {
-                    return serviceRequest.status === "Delivered";
-                }).length;
-
-                $("#totalServiceRequests").text(totalServiceRequests);
-                $("#pendingServiceRequests").text(pendingServiceRequests);
-                $("#inProgressServiceRequests").text(inProgressServiceRequests);
-                $("#deliveredServiceRequests").text(deliveredServiceRequests);
-            }
-
             function editServiceRequest(index) {
-                let serviceRequest = serviceRequests[index];
-                $("#customerName").val(serviceRequest.customerName);
-                $("#contactNumber").val(serviceRequest.contactNumber);
-                $("#evType").val(serviceRequest.evType);
-                $("#ticketNo").val(serviceRequest.ticketNo);
-                $("#serviceComplaintDate").val(serviceRequest.serviceComplaintDate);
-                $("#actionTaken").val(serviceRequest.actionTaken);
-                $("#vehicleDeliveryDate").val(serviceRequest.vehicleDeliveryDate);
-                $("#amountReceived").val(serviceRequest.amountReceived);
-                $("#status").val(serviceRequest.status);
-                $("#addServiceRequestBtn").text("Update Service Request");
-                $("#addServiceRequestBtn").attr("onclick", "updateServiceRequest(" + index + ")");
-                $("#addServiceRequestModal").modal("show");
-            }
+    let serviceRequest = serviceRequests[index];
+    $("#customerName").val(serviceRequest.customerName);
+    $("#contactNumber").val(serviceRequest.contactNumber);
+    $("#evType").val(serviceRequest.evType);
+    $("#ticketNo").val(serviceRequest.ticketNo);
+    $("#serviceComplaintDate").val(serviceRequest.serviceComplaintDate);
+    $("#actionTaken").val(serviceRequest.actionTaken);
+    $("#vehicleDeliveryDate").val(serviceRequest.vehicleDeliveryDate);
+    $("#amountReceived").val(serviceRequest.amountReceived);
+    $("#status").val(serviceRequest.status);
 
-            function updateServiceRequest(index) {
-                let serviceRequest = serviceRequests[index];
-                serviceRequest.customerName = $("#customerName").val();
-                serviceRequest.contactNumber = $("#contactNumber").val();
-                serviceRequest.evType = $("#evType").val();
-                serviceRequest.ticketNo = $("#ticketNo").val();
-                serviceRequest.serviceComplaintDate = $("#serviceComplaintDate").val();
-                serviceRequest.actionTaken = $("#actionTaken").val();
-                serviceRequest.vehicleDeliveryDate = $("#vehicleDeliveryDate").val();
-                serviceRequest.amountReceived = $("#amountReceived").val();
-                serviceRequest.status = $("#status").val();
-                updateServiceRequestsTable();
-                updateDashboard();
-                $("#addServiceRequestModal").modal("hide");
-                $("#addServiceRequestForm")[0].reset();
-                $("#addServiceRequestBtn").text("Add Service Request");
-                $("#addServiceRequestBtn").attr("onclick", "addServiceRequest()");
+    $("#addServiceRequestBtn").text("Update Service Request");
+    $("#addServiceRequestBtn").attr("onclick", `updateServiceRequest(${index})`);
+    $("#addServiceRequestModal").modal("show");
+}
+
+function updateServiceRequest(index) {
+    let serviceRequest = serviceRequests[index];
+    serviceRequest.customerName = $("#customerName").val();
+    serviceRequest.contactNumber = $("#contactNumber").val();
+    serviceRequest.evType = $("#evType").val();
+    serviceRequest.ticketNo = $("#ticketNo").val();
+    serviceRequest.serviceComplaintDate = $("#serviceComplaintDate").val();
+    serviceRequest.actionTaken = $("#actionTaken").val();
+    serviceRequest.vehicleDeliveryDate = $("#vehicleDeliveryDate").val();
+    serviceRequest.amountReceived = $("#amountReceived").val();
+    serviceRequest.status = $("#status").val();
+
+    updateServiceRequestsTable();
+    updateDashboard();
+
+    $("#addServiceRequestModal").modal("hide");
+    $("#addServiceRequestForm")[0].reset();
+
+    $("#addServiceRequestBtn").text("Add Service Request");
+    $("#addServiceRequestBtn").attr("onclick", ""); // Reset after update
+}
+
+function deleteServiceRequest(index) {
+    serviceRequests.splice(index, 1);
+    updateServiceRequestsTable();
+    updateDashboard();
             }
 
             function deleteServiceRequest(index) {
