@@ -74,8 +74,7 @@
                             <th>Status</th>
                             <th>Report File</th>
                             <th>Actions</th>
-                            </th>serviceReportFileName: serviceReportFile ? serviceReportFile.name : "No file uploaded"
-                        </tr>
+                
                     </thead>
                     <tbody id="serviceRequestsTableBody">
                     </tbody>
@@ -172,6 +171,7 @@
                 let vehicleDeliveryDate = $("#vehicleDeliveryDate").val();
                 let amountReceived = $("#amountReceived").val();
                 let status = $("#status").val();
+                let serviceReportFile = $("#serviceReport")[0].files[0];
 
                 serviceRequests.push({
                     customerName: customerName,
