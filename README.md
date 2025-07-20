@@ -1,5 +1,5 @@
 # Service Tracker App
-
+![image alt](https://github.com/Spsepl/EVService-Trijoshh/blob/4fb93710b1e01cb0e4535c56e8721b11dc24eec3/Trijoshh%20Logo.png)
 A simple web application to track electric vehicle (EV) service requests. The app allows you to add, edit, and delete service requests, and provides dashboard statistics for various request statuses. Built using HTML, Bootstrap, jQuery, and JavaScript.
 
 ## Features
@@ -64,7 +64,7 @@ Assuming a single-file usage:
 ```
 [Insert screenshot of the app UI here]
 ```
-![image alt](https://github.com/Spsepl/EVService-Trijoshh/blob/4fb93710b1e01cb0e4535c56e8721b11dc24eec3/Trijoshh%20Logo.png)
+
 ## License
 
 This project is for demonstration purposes and has no specific license. Feel free to use and modify as you wish.
