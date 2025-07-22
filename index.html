@@ -6,9 +6,7 @@
   <title>Service Tracker App</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
+    body { font-family: Arial, sans-serif; }
   </style>
 </head>
 <body>
@@ -19,11 +17,13 @@
       <img src="images/logo.png" alt="Trijoshh Logo" width="200"/>
     </div>
   </div>
-  <div class="row">
+  <div class="row mt-3">
     <div class="col-md-12">
       <button class="btn btn-primary" data-toggle="modal" data-target="#addServiceRequestModal">Add Service Request</button>
     </div>
   </div>
+
+  <!-- Dashboard Cards -->
   <div class="row mt-3">
     <div class="col-md-3">
       <div class="card text-white bg-primary mb-3">
@@ -35,7 +35,7 @@
     </div>
     <div class="col-md-3">
       <div class="card text-white bg-warning mb-3">
-        <div class="card-header">Pending Service Requests</div>
+        <div class="card-header">Pending</div>
         <div class="card-body">
           <h5 class="card-title" id="pendingServiceRequests">0</h5>
         </div>
@@ -43,7 +43,7 @@
     </div>
     <div class="col-md-3">
       <div class="card text-white bg-info mb-3">
-        <div class="card-header">In Progress Service Requests</div>
+        <div class="card-header">In Progress</div>
         <div class="card-body">
           <h5 class="card-title" id="inProgressServiceRequests">0</h5>
         </div>
@@ -51,7 +51,7 @@
     </div>
     <div class="col-md-3">
       <div class="card text-white bg-success mb-3">
-        <div class="card-header">Delivered Service Requests</div>
+        <div class="card-header">Delivered</div>
         <div class="card-body">
           <h5 class="card-title" id="deliveredServiceRequests">0</h5>
         </div>
@@ -59,6 +59,7 @@
     </div>
   </div>
 
+  <!-- Table -->
   <div class="row mt-3">
     <div class="col-md-12">
       <table class="table table-striped">
@@ -68,12 +69,12 @@
           <th>Contact Number</th>
           <th>EV Type</th>
           <th>Ticket No</th>
-          <th>Service Complaint Date</th>
-          <th>Action Taken / Remark</th>
-          <th>Vehicle Delivery Date</th>
-          <th>Amount Received</th>
+          <th>Service Date</th>
+          <th>Remark</th>
+          <th>Delivery Date</th>
+          <th>Amount</th>
           <th>Status</th>
-          <th>Report File</th>
+          <th>Report</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -88,79 +89,50 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Service Request</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span>&times;</span>
-        </button>
+        <h5 class="modal-title">Service Request</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
       </div>
       <div class="modal-body">
         <form id="addServiceRequestForm">
-          <div class="form-group">
-            <label for="customerName">Customer Name</label>
-            <input type="text" class="form-control" id="customerName" required>
-          </div>
-          <div class="form-group">
-            <label for="contactNumber">Contact Number</label>
-            <input type="text" class="form-control" id="contactNumber" required>
-          </div>
-          <div class="form-group">
-            <label for="evType">EV Type</label>
+          <input type="hidden" id="docId" />
+          <div class="form-group"><label>Customer Name</label><input type="text" class="form-control" id="customerName" required></div>
+          <div class="form-group"><label>Contact Number</label><input type="text" class="form-control" id="contactNumber" required></div>
+          <div class="form-group"><label>EV Type</label>
             <select class="form-control" id="evType" required>
-              <option value="">Select EV Type</option>
+              <option value="">Select</option>
               <option value="2 Wheeler Scooty">2 Wheeler Scooty</option>
               <option value="2 Wheeler Loader">2 Wheeler Loader</option>
               <option value="3 Wheeler Loader">3 Wheeler Loader</option>
               <option value="3 Wheeler Scooty">3 Wheeler Scooty</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="ticketNo">Ticket No</label>
-            <input type="text" class="form-control" id="ticketNo" required>
-          </div>
-          <div class="form-group">
-            <label for="serviceComplaintDate">Service Complaint Date</label>
-            <input type="date" class="form-control" id="serviceComplaintDate" required>
-          </div>
-          <div class="form-group">
-            <label for="actionTaken">Action Taken / Remark</label>
-            <textarea class="form-control" id="actionTaken" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="vehicleDeliveryDate">Vehicle Delivery Date</label>
-            <input type="date" class="form-control" id="vehicleDeliveryDate" required>
-          </div>
-          <div class="form-group">
-            <label for="amountReceived">Amount Received</label>
-            <input type="number" class="form-control" id="amountReceived" required>
-          </div>
-          <div class="form-group">
-            <label for="status">Status</label>
+          <div class="form-group"><label>Ticket No</label><input type="text" class="form-control" id="ticketNo" required></div>
+          <div class="form-group"><label>Service Complaint Date</label><input type="date" class="form-control" id="serviceComplaintDate" required></div>
+          <div class="form-group"><label>Action Taken / Remark</label><textarea class="form-control" id="actionTaken" required></textarea></div>
+          <div class="form-group"><label>Vehicle Delivery Date</label><input type="date" class="form-control" id="vehicleDeliveryDate" required></div>
+          <div class="form-group"><label>Amount Received</label><input type="number" class="form-control" id="amountReceived" required></div>
+          <div class="form-group"><label>Status</label>
             <select class="form-control" id="status" required>
-              <option value="">Select Status</option>
+              <option value="">Select</option>
               <option value="Pending">Pending</option>
               <option value="In Progress">In Progress</option>
               <option value="Delivered">Delivered</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="serviceReport">Upload Service Report (PDF/Image)</label>
-            <input type="file" class="form-control-file" id="serviceReport" accept=".pdf,image/*">
-          </div>
+          <div class="form-group"><label>Upload Report (optional)</label><input type="file" class="form-control-file" id="serviceReport" accept=".pdf,image/*"></div>
         </form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button class="btn btn-primary" id="addServiceRequestBtn">Add Service Request</button>
+        <button class="btn btn-primary" id="saveServiceRequestBtn">Save</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- JS -->
+<!-- JS Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
@@ -181,80 +153,110 @@
   let serviceRequests = [];
 
   $(document).ready(function () {
-    $("#addServiceRequestBtn").click(function () {
-      const customerName = $("#customerName").val();
-      const contactNumber = $("#contactNumber").val();
-      const evType = $("#evType").val();
-      const ticketNo = $("#ticketNo").val();
-      const serviceComplaintDate = $("#serviceComplaintDate").val();
-      const actionTaken = $("#actionTaken").val();
-      const vehicleDeliveryDate = $("#vehicleDeliveryDate").val();
-      const amountReceived = $("#amountReceived").val();
-      const status = $("#status").val();
-      const serviceReportFile = $("#serviceReport")[0].files[0];
-
-      db.collection("serviceRequests").add({
-        customerName,
-        contactNumber,
-        evType,
-        ticketNo,
-        serviceComplaintDate,
-        actionTaken,
-        vehicleDeliveryDate,
-        amountReceived,
-        status,
-        serviceReportFileName: serviceReportFile ? serviceReportFile.name : "No file uploaded",
-        timestamp: new Date()
-      }).then(() => {
-        alert("Service Request Saved!");
-        $("#addServiceRequestModal").modal("hide");
-        $("#addServiceRequestForm")[0].reset();
-        loadServiceRequests();
-      });
-    });
-
     loadServiceRequests();
+
+    $("#saveServiceRequestBtn").click(() => {
+      const data = {
+        customerName: $("#customerName").val(),
+        contactNumber: $("#contactNumber").val(),
+        evType: $("#evType").val(),
+        ticketNo: $("#ticketNo").val(),
+        serviceComplaintDate: $("#serviceComplaintDate").val(),
+        actionTaken: $("#actionTaken").val(),
+        vehicleDeliveryDate: $("#vehicleDeliveryDate").val(),
+        amountReceived: $("#amountReceived").val(),
+        status: $("#status").val(),
+        serviceReportFileName: $("#serviceReport")[0].files[0]?.name || "No file uploaded",
+        timestamp: new Date()
+      };
+
+      const docId = $("#docId").val();
+      if (docId) {
+        db.collection("serviceRequests").doc(docId).update(data).then(() => {
+          alert("Updated successfully");
+          resetForm();
+          loadServiceRequests();
+        });
+      } else {
+        db.collection("serviceRequests").add(data).then(() => {
+          alert("Added successfully");
+          resetForm();
+          loadServiceRequests();
+        });
+      }
+    });
   });
 
   function loadServiceRequests() {
-    db.collection("serviceRequests").orderBy("timestamp", "desc").get()
-      .then((querySnapshot) => {
-        serviceRequests = [];
-        querySnapshot.forEach((doc) => {
-          serviceRequests.push(doc.data());
-        });
-        updateServiceRequestsTable();
-        updateDashboard();
+    db.collection("serviceRequests").orderBy("timestamp", "desc").get().then((querySnapshot) => {
+      serviceRequests = [];
+      querySnapshot.forEach((doc) => {
+        serviceRequests.push({ id: doc.id, ...doc.data() });
       });
+      updateServiceRequestsTable();
+      updateDashboard();
+    });
   }
 
   function updateServiceRequestsTable() {
-    let tableBody = $("#serviceRequestsTableBody");
+    const tableBody = $("#serviceRequestsTableBody");
     tableBody.html("");
-    serviceRequests.forEach((serviceRequest, index) => {
-      let row = $("<tr>");
-      row.append($("<td>").text(serviceRequest.customerName));
-      row.append($("<td>").text(serviceRequest.contactNumber));
-      row.append($("<td>").text(serviceRequest.evType));
-      row.append($("<td>").text(serviceRequest.ticketNo));
-      row.append($("<td>").text(serviceRequest.serviceComplaintDate));
-      row.append($("<td>").text(serviceRequest.actionTaken));
-      row.append($("<td>").text(serviceRequest.vehicleDeliveryDate));
-      row.append($("<td>").text(serviceRequest.amountReceived));
-      row.append($("<td>").text(serviceRequest.status));
-      row.append($("<td>").html(serviceRequest.serviceReportFileName !== "No file uploaded"
-        ? `<span class="badge badge-info">${serviceRequest.serviceReportFileName}</span>`
-        : `<span class="text-muted">No file</span>`));
-      row.append($("<td>").html(`<span class="text-muted">Edit/Delete not available</span>`));
+    serviceRequests.forEach((req) => {
+      const row = $("<tr>");
+      row.append($("<td>").text(req.customerName));
+      row.append($("<td>").text(req.contactNumber));
+      row.append($("<td>").text(req.evType));
+      row.append($("<td>").text(req.ticketNo));
+      row.append($("<td>").text(req.serviceComplaintDate));
+      row.append($("<td>").text(req.actionTaken));
+      row.append($("<td>").text(req.vehicleDeliveryDate));
+      row.append($("<td>").text(req.amountReceived));
+      row.append($("<td>").text(req.status));
+      row.append($("<td>").html(req.serviceReportFileName !== "No file uploaded"
+        ? `<span class="badge badge-info">${req.serviceReportFileName}</span>` : `<span class="text-muted">No file</span>`));
+      row.append($("<td>").html(`
+        <button class="btn btn-sm btn-primary" onclick="editServiceRequest('${req.id}')">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteServiceRequest('${req.id}')">Delete</button>
+      `));
       tableBody.append(row);
     });
   }
 
   function updateDashboard() {
     $("#totalServiceRequests").text(serviceRequests.length);
-    $("#pendingServiceRequests").text(serviceRequests.filter(req => req.status === "Pending").length);
-    $("#inProgressServiceRequests").text(serviceRequests.filter(req => req.status === "In Progress").length);
-    $("#deliveredServiceRequests").text(serviceRequests.filter(req => req.status === "Delivered").length);
+    $("#pendingServiceRequests").text(serviceRequests.filter(r => r.status === "Pending").length);
+    $("#inProgressServiceRequests").text(serviceRequests.filter(r => r.status === "In Progress").length);
+    $("#deliveredServiceRequests").text(serviceRequests.filter(r => r.status === "Delivered").length);
+  }
+
+  function editServiceRequest(id) {
+    const req = serviceRequests.find(r => r.id === id);
+    $("#docId").val(req.id);
+    $("#customerName").val(req.customerName);
+    $("#contactNumber").val(req.contactNumber);
+    $("#evType").val(req.evType);
+    $("#ticketNo").val(req.ticketNo);
+    $("#serviceComplaintDate").val(req.serviceComplaintDate);
+    $("#actionTaken").val(req.actionTaken);
+    $("#vehicleDeliveryDate").val(req.vehicleDeliveryDate);
+    $("#amountReceived").val(req.amountReceived);
+    $("#status").val(req.status);
+    $("#addServiceRequestModal").modal("show");
+  }
+
+  function deleteServiceRequest(id) {
+    if (confirm("Delete this service request?")) {
+      db.collection("serviceRequests").doc(id).delete().then(() => {
+        alert("Deleted successfully");
+        loadServiceRequests();
+      });
+    }
+  }
+
+  function resetForm() {
+    $("#addServiceRequestForm")[0].reset();
+    $("#docId").val("");
+    $("#addServiceRequestModal").modal("hide");
   }
 </script>
 </body>
