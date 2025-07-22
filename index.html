@@ -156,42 +156,77 @@
   </div>
 </div>
 
+<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
 <script>
-let serviceRequests = [];
+  const firebaseConfig = {
+    apiKey: "AIzaSyB7amiDWj8YZz2e7nEhYDASzr3ce9uhvsM",
+    authDomain: "ev-service-tracker.firebaseapp.com",
+    projectId: "ev-service-tracker",
+    storageBucket: "ev-service-tracker.firebasestorage.app",
+    messagingSenderId: "116341100203",
+    appId: "1:116341100203:web:84f964fd5fbadf7b1931ee",
+    measurementId: "G-84CQJ3B30C"
+  };
 
-$(document).ready(function () {
-  $("#addServiceRequestBtn").click(function () {
-    let customerName = $("#customerName").val();
-    let contactNumber = $("#contactNumber").val();
-    let evType = $("#evType").val();
-    let ticketNo = $("#ticketNo").val();
-    let serviceComplaintDate = $("#serviceComplaintDate").val();
-    let actionTaken = $("#actionTaken").val();
-    let vehicleDeliveryDate = $("#vehicleDeliveryDate").val();
-    let amountReceived = $("#amountReceived").val();
-    let status = $("#status").val();
-    let serviceReportFile = $("#serviceReport")[0].files[0];
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    serviceRequests.push({
-      customerName,
-      contactNumber,
-      evType,
-      ticketNo,
-      serviceComplaintDate,
-      actionTaken,
-      vehicleDeliveryDate,
-      amountReceived,
-      status,
-      serviceReportFileName: serviceReportFile ? serviceReportFile.name : "No file uploaded"
+  let serviceRequests = [];
+
+  $(document).ready(function () {
+    $("#addServiceRequestBtn").click(function () {
+      const customerName = $("#customerName").val();
+      const contactNumber = $("#contactNumber").val();
+      const evType = $("#evType").val();
+      const ticketNo = $("#ticketNo").val();
+      const serviceComplaintDate = $("#serviceComplaintDate").val();
+      const actionTaken = $("#actionTaken").val();
+      const vehicleDeliveryDate = $("#vehicleDeliveryDate").val();
+      const amountReceived = $("#amountReceived").val();
+      const status = $("#status").val();
+      const serviceReportFile = $("#serviceReport")[0].files[0];
+
+      db.collection("serviceRequests").add({
+        customerName,
+        contactNumber,
+        evType,
+        ticketNo,
+        serviceComplaintDate,
+        actionTaken,
+        vehicleDeliveryDate,
+        amountReceived,
+        status,
+        serviceReportFileName: serviceReportFile ? serviceReportFile.name : "No file uploaded",
+        timestamp: new Date()
+      }).then(() => {
+        alert("Service Request Saved!");
+        $("#addServiceRequestModal").modal("hide");
+        $("#addServiceRequestForm")[0].reset();
+        loadServiceRequests();
+      });
     });
 
-    updateServiceRequestsTable();
-    updateDashboard();
-    $("#addServiceRequestModal").modal("hide");
-    $("#addServiceRequestForm")[0].reset();
+    loadServiceRequests();
   });
+
+  function loadServiceRequests() {
+    db.collection("serviceRequests").orderBy("timestamp", "desc").get()
+      .then((querySnapshot) => {
+        serviceRequests = [];
+        querySnapshot.forEach((doc) => {
+          serviceRequests.push(doc.data());
+        });
+        updateServiceRequestsTable();
+        updateDashboard();
+      });
+  }
 
   function updateServiceRequestsTable() {
     let tableBody = $("#serviceRequestsTableBody");
@@ -210,10 +245,7 @@ $(document).ready(function () {
       row.append($("<td>").html(serviceRequest.serviceReportFileName !== "No file uploaded"
         ? `<span class="badge badge-info">${serviceRequest.serviceReportFileName}</span>`
         : `<span class="text-muted">No file</span>`));
-      row.append($("<td>").html(
-        `<button class='btn btn-sm btn-primary' onclick='editServiceRequest(${index})'>Edit</button> 
-         <button class='btn btn-sm btn-danger' onclick='deleteServiceRequest(${index})'>Delete</button>`
-      ));
+      row.append($("<td>").html(`<span class="text-muted">Edit/Delete not available</span>`));
       tableBody.append(row);
     });
   }
@@ -224,51 +256,6 @@ $(document).ready(function () {
     $("#inProgressServiceRequests").text(serviceRequests.filter(req => req.status === "In Progress").length);
     $("#deliveredServiceRequests").text(serviceRequests.filter(req => req.status === "Delivered").length);
   }
-});
-
-// Move these OUTSIDE document.ready
-function editServiceRequest(index) {
-  let serviceRequest = serviceRequests[index];
-  $("#customerName").val(serviceRequest.customerName);
-  $("#contactNumber").val(serviceRequest.contactNumber);
-  $("#evType").val(serviceRequest.evType);
-  $("#ticketNo").val(serviceRequest.ticketNo);
-  $("#serviceComplaintDate").val(serviceRequest.serviceComplaintDate);
-  $("#actionTaken").val(serviceRequest.actionTaken);
-  $("#vehicleDeliveryDate").val(serviceRequest.vehicleDeliveryDate);
-  $("#amountReceived").val(serviceRequest.amountReceived);
-  $("#status").val(serviceRequest.status);
-
-  $("#addServiceRequestBtn").text("Update Service Request");
-  $("#addServiceRequestBtn").attr("onclick", `updateServiceRequest(${index})`);
-  $("#addServiceRequestModal").modal("show");
-}
-
-function updateServiceRequest(index) {
-  let serviceRequest = serviceRequests[index];
-  serviceRequest.customerName = $("#customerName").val();
-  serviceRequest.contactNumber = $("#contactNumber").val();
-  serviceRequest.evType = $("#evType").val();
-  serviceRequest.ticketNo = $("#ticketNo").val();
-  serviceRequest.serviceComplaintDate = $("#serviceComplaintDate").val();
-  serviceRequest.actionTaken = $("#actionTaken").val();
-  serviceRequest.vehicleDeliveryDate = $("#vehicleDeliveryDate").val();
-  serviceRequest.amountReceived = $("#amountReceived").val();
-  serviceRequest.status = $("#status").val();
-
-  updateServiceRequestsTable();
-  updateDashboard();
-  $("#addServiceRequestModal").modal("hide");
-  $("#addServiceRequestForm")[0].reset();
-  $("#addServiceRequestBtn").text("Add Service Request");
-  $("#addServiceRequestBtn").attr("onclick", "");
-}
-
-function deleteServiceRequest(index) {
-  serviceRequests.splice(index, 1);
-  updateServiceRequestsTable();
-  updateDashboard();
-}
 </script>
 </body>
 </html>
