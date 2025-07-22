@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Firebase App</title>
+</head>
+<body style="font-family: Arial; padding: 20px;">
+  <h2>EV Service Tracker</h2>
+
+  <input type="text" id="name" placeholder="Enter name" />
+  <button onclick="saveData()">Save</button>
+  <button onclick="loadData()">Load</button>
+
+  <ul id="dataList"></ul>
+
+  <!-- Firebase SDK (non-module) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7amiDWj8YZz2e7nEhYDASzr3ce9uhvsM",
+      authDomain: "ev-service-tracker.firebaseapp.com",
+      projectId: "ev-service-tracker",
+      storageBucket: "ev-service-tracker.firebasestorage.app",
+      messagingSenderId: "116341100203",
+      appId: "1:116341100203:web:84f964fd5fbadf7b1931ee",
+      measurementId: "G-84CQJ3B30C"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function saveData() {
+      const name = document.getElementById("name").value;
+      if (!name) {
+        alert("Please enter a name.");
+        return;
+      }
+      db.collection("users").add({
+        name: name,
+        timestamp: new Date()
+      }).then(() => {
+        alert("Data saved!");
+        document.getElementById("name").value = "";
+      }).catch((error) => {
+        alert("Error saving data: " + error);
+      });
+    }
+
+    function loadData() {
+      const list = document.getElementById("dataList");
+      list.innerHTML = "";
+      db.collection("users").orderBy("timestamp", "desc").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const li = document.createElement("li");
+          li.textContent = doc.data().name + " (Saved on: " + doc.data().timestamp.toDate().toLocaleString() + ")";
+          list.appendChild(li);
+        });
+      }).catch((error) => {
+        alert("Error loading data: " + error);
+      });
+    }
+  </script>
+</body>
+</html>
